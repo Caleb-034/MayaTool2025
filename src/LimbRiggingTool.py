@@ -54,7 +54,9 @@ class LimbRigger:  #class that sets the rigging of limbs with FK cntrls
         mc.orientConstraint(ctrlName, jntName)
         mc.setAttr(f"{ctrlName}.overrrideEnabled", 1)
         mc.setAttr(f"{ctrlName}.overrrideRGBColors", 1)
-        #should i specify all three colors in the rgb or nah?
+        r = self.controllerColor.redF()
+        g = self.controllerColor.greenF()
+        b = self.controllerColor.blueF()
         return ctrlName, ctrlGrpName
     
     def CreateBoxController(self, name): 
@@ -119,8 +121,8 @@ class LimbRigger:  #class that sets the rigging of limbs with FK cntrls
         ikfkBlendAttr= ikfkBlendCtrlName +"."+ ikfkBlendCtrlName
 
         mc.expression(s=f"{ikHandleName}.ikBlend= {ikfkBlendAttr}")
-        mc.expression(s=f"{ikEndCtrlGrp}.v={ikPoleVectorCtrlGrp}.v, = {ikfkBlendAttr}")
-        mc.expresesion(s=f"{rootFKCtrlGrp}.v=1-{ikfkBlendAttr}")
+        mc.expression(s=f"{ikEndCtrlGrp}.v ={ikPoleVectorCtrlGrp}.v = {ikfkBlendAttr}")
+        mc.expression(s=f"{rootFKCtrlGrp}.v=1-{ikfkBlendAttr}")
         mc.expression(s=f"{endOrientConstraint}.")
         mc.expression(s=f"{endOrientConstraint}.{ikEndCtrl}w1 = {ikfkBlendAttr}")
 

@@ -1,11 +1,12 @@
-from MayaUtils import IsJoint, QMayaWindow
-from PySide2.QtWidgets import QLineEdit, QMessageBox, QPushButton, QVBoxLayout
+from MayaUtils import IsJoint, IsMesh, QMayaWindow
+from PySide2.QtWidgets import QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout
 import maya.cmds as mc
 from pymel.core.general import selected 
 
 class MayaToUE:
     def __init__(self): 
         self.rootJnt = ""
+        self.meshes = []
 
     def SetSelectedAsRootJnt(self):
         selection = mc.ls(sl=True)
@@ -24,14 +25,28 @@ class MayaToUE:
         currentRootJntPosX, currentRootJntPosY, currentRootJntPosZ = mc.xform(self.rootJnt, q=True, t=True, ws=True)
         if currentRootJntPosX ==0 and currentRootJntPosY==0 and currentRootJntPosZ==0: 
             raise Exception("current root joint is already at origin, no need to make a new one!")
-        self.rootJnt = selectedJnt
-
         
         mc.select(cl=True)
         rootJntName = self.rootJnt + "_root"
         mc.joint(n=rootJntName)
         mc.parent(self.rootJnt, rootJntName)
         self.rootJnt = rootJntName 
+
+    def AddMeshes(self): 
+        selection = mc.ls(sl=True)
+        if not selection: 
+            raise Exception("No mesh selected")
+        
+        meshes = set()
+
+        for sel in selection: 
+            if IsMesh(self): 
+                meshes.add(sel)
+
+            if len(meshes) ==0: 
+                raise Exception("No mesh selected")
+            
+            self.meshes = list(meshes)
 
 
 class MayaToUEWidget(QMayaWindow):
@@ -57,6 +72,21 @@ class MayaToUEWidget(QMayaWindow):
         addRootJntBtn = QPushButton("Add Root Joint")
         addRootJntBtn.clicked.connect(self.AddRootJntButtonClicked)
         self.masterLayout.addWidget(addRootJntBtn)
+
+        self.meshList = QListWidget()
+        self.masterLayout.addWidget(self.meshList)
+        self.meshList.setFixedHeight(80)
+        addMeshBtn = QPushButton("Add Meshes")
+        addMeshBtn.clicked.connect(self.addMeshBtnClicked)
+        self.masterLayout.addWidget(addMeshBtn)
+    
+    def AddMeshBtnClicked(self):
+        try: 
+            self MayaToUE.AddMeshes()
+            self.meshList.clear()
+            self.meshList.addItems(self.MayaToUE.rootJnt)
+        except Exception as e: 
+            QMessageBox().critical
 
     def AddRootJntButtonClicked(self):
         try: 

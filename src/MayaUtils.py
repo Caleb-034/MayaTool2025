@@ -1,10 +1,10 @@
 import maya.cmds as mc
 import maya.cmds as mc
-import maya.OpenMayaUI as omui # this imports maya's open maya ui module, it can help finding the maya main window
-import shiboken2 # this helps with converting the maya main window to the pyside type
+import maya.OpenMayaUI as omui 
+import shiboken2 
  
 from PySide2.QtWidgets import QMainWindow, QWidget
-from PySide2.QtCore import Qt # this has some values we can use to configure our widget, like their windowType, or orientation
+from PySide2.QtCore import Qt 
  
 def GetMayaMainWindow()->QMainWindow:
     mayaMainWindow = omui.MQtUtil.mainWindow()

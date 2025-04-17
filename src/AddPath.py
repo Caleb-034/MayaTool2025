@@ -1,3 +1,3 @@
 import sys
-sys.path.append("C:/JT/MayaTools/src")
+sys.path.append("C:/Users/ccastrui/Desktop/MayaTools")
 print ("added path")

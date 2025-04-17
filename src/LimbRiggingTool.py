@@ -135,6 +135,9 @@ class ColorPicker(QWidget):
     def ColorPickerBtnClicked(self):
         self.color = QColorDialog.getColor()
         self.colorPickerBtn.setStyleSheet(f"background-color:{self.color.name()}")
+
+    def getColor(self):
+        return self.color
         
 class LimbRigToolWidget(QMayaWindow):  #creates widgets that are in LimbRigWindow
     def __init__(self):#creates button, texts, and slider widget
@@ -154,6 +157,10 @@ class LimbRigToolWidget(QMayaWindow):  #creates widgets that are in LimbRigWindo
         self.autoFindBtn = QPushButton("Auto Find")
         self.masterLayout.addWidget(self.autoFindBtn)
         self.autoFindBtn.clicked.connect(self.AutoFindBtnClicked)
+
+        self.setColorBtn = QPushButton("Set Color")
+        self.masterLayout.addWidget(self.setColorBtn)
+        self.setColorBtn.clicked.connect(self.SetColorBtnClicked)
 
         ctrlSliderLayout = QHBoxLayout()
 
@@ -190,6 +197,24 @@ class LimbRigToolWidget(QMayaWindow):  #creates widgets that are in LimbRigWindo
             self.jointSelectionText.setText(f"{self.rigger.root},{self.rigger.mid},{self.rigger.end}")
         except Exception as e: #gives error message
             QMessageBox.critical(self, "Error", "Wrong Selection, please select the first joint of a limb!")
+
+        def SetColorBtnClicked(self):
+            selected = mc.ls(sl=True)
+            if not selected:
+                QMessageBox.warning(self, "No Selection", "Please select a controller to color.")
+            return
+        
+            color = self.colorPicker.getColor()
+            r, g, b = color.redF(), color.greenF(), color.blueF()
+
+            for obj in selected:
+                try:
+                    mc.setAttr(f"{obj}.overrideEnabled", 1)
+                    mc.setAttr(f"{obj}.overrideRGBColors", 1)
+                    mc.setAttr(f"{obj}.overrideColorRGB", r, g, b, type="double3")
+                except Exception as e:
+                    QMessageBox.warning(self, "Error", f"Failed to set color for {obj}: {str(e)}")
+
 
 
 

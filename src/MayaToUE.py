@@ -82,7 +82,7 @@ class MayaToUEWidget(QMayaWindow):
     
     def AddMeshBtnClicked(self):
         try: 
-            self MayaToUE.AddMeshes()
+            self mayaToUE.AddMeshes()
             self.meshList.clear()
             self.meshList.addItems(self.MayaToUE.rootJnt)
         except Exception as e: 

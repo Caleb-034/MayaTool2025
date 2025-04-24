@@ -43,6 +43,22 @@ class MayaToUE:
         allJnts = self.GetAllJoints()
         allMeshes = self.meshes 
 
+    def SendToUnreal()
+        ueUtilPath = os.path.join(MayaPluginSpring2025sec1.srcDir, "UnrealUtils.py")
+        ueUtilPath = os.parth.normpath(ueUtilPath)
+
+        meshPath = self.GetSkeletalMeshSavePath().replace("\\", "/")
+        aimDir = self.getAnimDirPAth().replace("\\", "/")
+
+        command = []
+        with open (ueUtilPath, 'r') as ueUtilityFile: 
+            commands = ueUtilityFile.readlines()
+
+            commands.append(f"\nImportMeshAndAnimation(\'{meshPath}\', \'{aimDir}'\)")
+
+            command = "".join(commands)
+            print(command)
+
     def RemoveAnimClip(self, clipToRemove: AnimClip):
         self.animationClips.remove(clipToRemove)
         print(f"animation clip removed, now we have: {len(self.animationClips)} left")

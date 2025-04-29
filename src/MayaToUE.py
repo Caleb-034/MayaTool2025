@@ -1,9 +1,11 @@
 import os 
 from MayaUtils import *
+op
 from PySide2.QtCore import Signal
 from PySide2.QtGui import QIntValidator, QRegExpValidator
 from PySide2.QtWidgets import QCheckBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 import maya.cmds as mc
+import unreal execution 
 
 def TryAction(action):
     def wrapper(*args, **kwargs):
@@ -58,6 +60,11 @@ class MayaToUE:
 
             command = "".join(commands)
             print(command)
+            remoteExc = remote_execution.remoteExecution()
+            remoteExc.start()
+            remoteExc.open_command_connection(remoteExc.remote_nodes)
+            remoteExc.run_command(command)
+            remoteExc.stop()
 
     def RemoveAnimClip(self, clipToRemove: AnimClip):
         self.animationClips.remove(clipToRemove)

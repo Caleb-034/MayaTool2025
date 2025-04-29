@@ -1,0 +1,5 @@
+global proc FilePathEditor() {}"
+
+string $locatorInfo = 'WhatIS FilePathLocator) ; 
+string #FilePath = 'substring $locator 25 299' ; 
+print $filePpath'

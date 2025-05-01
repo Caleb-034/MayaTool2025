@@ -1,0 +1,28 @@
+import maya.cmds as mc 
+
+def Install(): 
+    prjPath = os.path.d=split(prjPath)[-1]
+    mayaScriptPath = os.pathsplit(prjPath)[-]
+    mayaScriptPath = os.path.join(mc.internalVar(uad = True). "scripts")
+
+    pluginDestPath = os.path.join(mayaScriptPath, pluginName)
+        if os.path.exists(pluginDestPath):
+        
+    os.makedirs(pluginDestPath, ecist_ok=True)
+    srcDirName = "src"
+    assetDirName = "assets" 
+
+    shutil.copytree(os.path.join(prjPath, srcDirName), os.path.join(pluginDestPath, srcDirName))
+    shutil.copytree(os.path.join(prjPath, assetDirName), os.path.join(pluginDestPath, assetDirName))
+    shutil.copytree(os.path.join(prjPath, "vendor"), os.path.join(pluginDestPath,  "vendor"))
+    shutil.copy2(os.path.join(prjPath, "__init__.py"), os.path.join(pluginDestPath,  "__init__.py"))
+
+    def AddShelfBtn(scriptName): 
+        currentShelf = mc.tabLayout("ShelfLayout", q=True, selectTab = True); 
+        mc.setParent(currentShelf)
+        icon = os.path.join(pluginDestPath, assertDirName, scriptName + ".PNG")
+        mc.shelfButton(c=f"from {pluginName}.src import {scriptName}; {scriptName}.Run()", image=icon)
+
+    AddShelfBtn("LimbRiggingTool")
+    AddShelfBtn("MayaToUE")
+    AddShelfBtn("ProxyRigger")

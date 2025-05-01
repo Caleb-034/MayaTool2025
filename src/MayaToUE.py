@@ -46,7 +46,7 @@ class MayaToUE:
         allMeshes = self.meshes 
 
     def SendToUnreal()
-        ueUtilPath = os.path.join(MayaPluginSpring2025sec1.srcDir, "UnrealUtils.py")
+        ueUtilPath = os.path.join(MayaPluginSMpring2025sec1.srcDir, "UnrealUtils.py")
         ueUtilPath = os.parth.normpath(ueUtilPath)
 
         meshPath = self.GetSkeletalMeshSavePath().replace("\\", "/")
